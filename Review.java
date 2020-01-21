@@ -83,32 +83,6 @@ public class Review {
     return temp.trim();
   }
   
-  
-  public static int starRating(String fileName)
-  {
-    // get total sentiment
-    // if sentiment value is certain amount give star
-     int totalSentiment = (int) totalSentiment(fileName);
-
-     if(totalSentiment < 0)
-     {
-        return 1;
-     }
-     else if(totalSentiment < 5)
-     {
-        return 2;
-     }
-     else if(totalSentiment < 15)
-     {
-        return 3;
-     }
-     else
-     {
-        return 4;
-     }
-  }
-
-  
   /**
    * @returns the sentiment value of word as a number between -1 (very negative) to 1 (very positive sentiment) 
    */
@@ -190,5 +164,30 @@ public class Review {
     } else {
       return randomNegativeAdj();
     }
+  }
+  
+  public static int starRating(String fileName)
+  {
+  // get total sentiment
+  // if sentiment value is certain amount give star
+   int totalSentiment = (int) totalSentiment(fileName);
+   
+   if(totalSentiment < 0)
+   {
+      return 1;
+   }
+   else if(totalSentiment < 5)
+   {
+      return 2;
+   }
+   else if(totalSentiment < 15)
+   {
+      return 3;
+   }
+   else
+   {
+      return 4;
+   }
+  
   }
 }
