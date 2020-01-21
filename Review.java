@@ -165,4 +165,63 @@ public class Review {
       return randomNegativeAdj();
     }
   }
+  
+  public static String fakeReviewStronger(String fileName)
+  {
+      //Turns file into string
+      String review = textToString(fileName);
+      //Index of start and end  of word to be replaced that will go into substring
+      int replaceWordStart = 0;
+      int replaceWordEnd = 0;
+
+      String wordToReplace = "";
+      String randomAdj = "";
+
+      //Iterates through whole string to find "*".
+      wholeReview: for(int i = 0; i < review.length(); i++)
+      {
+         String str = review.substring(i, i+1);
+         
+         if(str.equals("*"))
+         {
+            //First index that will find substring.
+            replaceWordStart = review.indexOf("*");
+            
+            //Iterates though rest of string until it finds the end of the word.
+            starredAdj: for(int j = replaceWordStart; j < review.length(); j++)
+            {
+                  String strAdj = review.substring(j, j+1);
+                  
+                  //looks for space to signify end of word, or if it can't find a space, the end of the string. 
+                  if(strAdj.equals(" "))
+                  {
+                     replaceWordEnd = j;
+                     break;
+                  }
+                  else
+                  {
+                     replaceWordEnd = review.length();
+                  }
+            }
+            //finds sentiment val of starred adj
+            double replaceSentiVal = sentimentVal(review.substring(replaceWordStart + 1,replaceWordEnd));
+            
+            //checks to see if it should use a positive or negative adjective;
+            if(replaceSentiVal < 0.0)
+            {
+               randomAdj += randomNegativeAdj();
+            }
+            else
+            {
+               randomAdj += randomNegativeAdj();
+
+            }
+            
+            review = review.substring(0, replaceWordStart) + randomAdj + review.substring(replaceWordEnd);
+            //resets the adj for next starred adj
+            randomAdj = "";
+          }
+      }
+      return review;  
+  }
 }
