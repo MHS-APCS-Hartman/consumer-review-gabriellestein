@@ -166,6 +166,57 @@ public class Review {
     }
   }
   
+  public static String fakeReviewStronger(String fileName)
+  {
+   String review = textToString(fileName);
+   String word = "";
+   String newAdjective = "";
+   String fakeReview = "";
+   boolean asteriskDetected = false;
+   
+   for (int i = 0; i < reveiw.length(); i++)
+   {
+      String str = review.substring(i, i+1);
+      if (str.equals("*"))
+      {
+         asteriskDetected = true;
+      }
+      
+      else if (str.equals(" ") && asteriskDetected)
+      {
+         while (true)
+         {
+            newAdjective = randomAdjective();
+            if ( (sentimentVal(adjective) > 0) && (sentimentVal(newAdjective) > sentimentVal(word)) )
+            {
+               break;
+            }
+            else if ( (sentimentVal(adjective) < 0) && (sentimentVal(newAdjective) < sentimentVal(word)) )
+            {
+               break;
+            }
+            else if (sentimentVal(adjective) == 0)
+            {
+               break;
+            }
+         }
+         
+         fakeReview += newAdjective + " ";
+         asteriskDetected = false;
+         word = "";
+      }
+      //else if (asteriskDetected == true)
+      //{
+        // word += str;
+      //}
+      
+      else if (asteriskDetected == false)
+      {
+         fakeReview += str;
+      }
+   }
+   return fakeReview;
+
    public static double totalSentiment(String fileName)
   {
       //open file
