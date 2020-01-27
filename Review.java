@@ -216,5 +216,37 @@ public class Review {
       }
    }
    return fakeReview;
+
+   public static double totalSentiment(String fileName)
+  {
+      //open file
+      //pick each word; when i find a space, all the stuff before was a word BUT I've got to remove punctuation.
+         //Go throguh each character to look for spaces, add letters to word if not a space
+         //If space
+            //remove punctuation
+            //get sentiment value nad add to total sentiment value
+            //reset word to blank.
+         //Else, add letter to word 
+      //return value
+   
+      //Build Word
+      String file = textToString(fileName);
+      String word = "";
+      String space = " ";
+      double totalVal = 0.0;
+      for(int i = 0; i < file.length(); i++)
+         {
+            String str = file.substring(i, i+1);
+            if(str.equals(space) || i + 1 == file.length())
+            {
+               totalVal += sentimentVal(removePunctuation(word));
+               word = "";
+            }
+            else
+            {
+               word += str;
+            }
+         } 
+      return totalVal;
   }
 }
