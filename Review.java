@@ -168,54 +168,53 @@ public class Review {
   
   public static String fakeReviewStronger(String fileName)
   {
-      String review = textToString(fileName);
-      String fakeReveiw = "";
-      String word = "";
-      String newAdj = randomAdjective();
-      
-      for(int i = 0; i < review.length() - 1; i++)
+   String review = textToString(fileName);
+   String word = "";
+   String newAdjective = "";
+   String fakeReview = "";
+   boolean asteriskDetected = false;
+   
+   for (int i = 0; i < reveiw.length(); i++)
+   {
+      String str = review.substring(i, i+1);
+      if (str.equals("*"))
       {
-         String str = review.substring(i, i+1);
-         if(str.equals(" "))
-         {  
-            if(word.indexOf("*") > 0){               
-               word = removePunctuation(word);
-               if(totalSentiment(review) <= 0)
-               { 
-                  while(true)
-                  {
-                     newAdj = randomNegativeAdj();
-                     if(sentimentVal(newAdj) < sentimentVal(word))
-                     {
-                        break;
-                     }
-                  }
-               }
-               else
-               {
-                  while(true)
-                  {
-                     newAdj = randomPositiveAdj();
-                     if(sentimentVal(newAdj) < sentimentVal(word))
-                     {
-                        break;
-                     }
-                  }
-               }
-               fakeReveiw += newAdj;
-               word = "";
-            }
-            else
-            {
-               fakeReveiw += word;
-               word = "";
-            }
-         }
-         else
+         asteriskDetected = true;
+      }
+      
+      else if (str.equals(" ") && asteriskDetected)
+      {
+         while (true)
          {
-            word += str;
+            newAdjective = randomAdjective();
+            if ( (sentimentVal(adjective) > 0) && (sentimentVal(newAdjective) > sentimentVal(word)) )
+            {
+               break;
+            }
+            else if ( (sentimentVal(adjective) < 0) && (sentimentVal(newAdjective) < sentimentVal(word)) )
+            {
+               break;
+            }
+            else if (sentimentVal(adjective) == 0)
+            {
+               break;
+            }
          }
-      }   
-      return fakeReveiw;
+         
+         fakeReview += newAdjective + " ";
+         asteriskDetected = false;
+         word = "";
+      }
+      //else if (asteriskDetected == true)
+      //{
+        // word += str;
+      //}
+      
+      else if (asteriskDetected == false)
+      {
+         fakeReview += str;
+      }
+   }
+   return fakeReview;
   }
 }
