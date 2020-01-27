@@ -166,7 +166,31 @@ public class Review {
       return randomNegativeAdj();
     }
   }
-   
+  public static int starRating(String fileName)
+  {
+    // get total sentiment
+    // if sentiment value is certain amount give star
+     int totalSentiment = (int) totalSentiment(fileName);
+
+     if(totalSentiment < 0)
+     {
+        return 1;
+     }
+     else if(totalSentiment < 5)
+     {
+        return 2;
+     }
+     else if(totalSentiment < 15)
+     {
+        return 3;
+     }
+     else
+     {
+        return 4;
+     }
+
+  }
+
   public static String fakeReview(String fileName)
   {
       //Turns file into string
@@ -429,6 +453,7 @@ public class Review {
       }
    }
    return fakeReview;
+
 
    public static double totalSentiment(String fileName)
   {
