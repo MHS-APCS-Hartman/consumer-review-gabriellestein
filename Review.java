@@ -130,9 +130,6 @@ public class Review {
     
     return word;
   }
- 
-
-
   
   /** 
    * Randomly picks a positive adjective from the positiveAdjectives.txt file and returns it.
@@ -166,58 +163,7 @@ public class Review {
     }
   }
   
-  public static String fakeReviewStronger(String fileName)
-  {
-   String review = textToString(fileName);
-   String word = "";
-   String newAdjective = "";
-   String fakeReview = "";
-   boolean asteriskDetected = false;
-   
-   for (int i = 0; i < reveiw.length(); i++)
-   {
-      String str = review.substring(i, i+1);
-      if (str.equals("*"))
-      {
-         asteriskDetected = true;
-      }
-      
-      else if (str.equals(" ") && asteriskDetected)
-      {
-         while (true)
-         {
-            newAdjective = randomAdjective();
-            if ( (sentimentVal(adjective) > 0) && (sentimentVal(newAdjective) > sentimentVal(word)) )
-            {
-               break;
-            }
-            else if ( (sentimentVal(adjective) < 0) && (sentimentVal(newAdjective) < sentimentVal(word)) )
-            {
-               break;
-            }
-            else if (sentimentVal(adjective) == 0)
-            {
-               break;
-            }
-         }
-         
-         fakeReview += newAdjective + " ";
-         asteriskDetected = false;
-         word = "";
-      }
-      //else if (asteriskDetected == true)
-      //{
-        // word += str;
-      //}
-      
-      else if (asteriskDetected == false)
-      {
-         fakeReview += str;
-      }
-   }
-   return fakeReview;
-
-   public static double totalSentiment(String fileName)
+  public static double totalSentiment(String fileName)
   {
       //open file
       //pick each word; when i find a space, all the stuff before was a word BUT I've got to remove punctuation.
@@ -248,5 +194,125 @@ public class Review {
             }
          } 
       return totalVal;
+  }
+  
+  public static int starRating(String fileName)
+  {
+    // get total sentiment
+    // if sentiment value is certain amount give star
+     int totalSentiment = (int) totalSentiment(fileName);
+
+     if(totalSentiment < 0)
+     {
+        return 1;
+     }
+     else if(totalSentiment < 5)
+     {
+        return 2;
+     }
+     else if(totalSentiment < 15)
+     {
+        return 3;
+     }
+     else
+     {
+        return 4;
+     }
+
+  }
+
+  public static String fakeReview(String fileName)
+  {
+      //Turns file into string
+      String review = textToString(fileName);
+      //Index of start and end  of word to be replaced that will go into substring
+      int replaceWordStart = 0;
+      int replaceWordEnd = 0;
+
+      String wordToReplace = "";
+
+      //Iterates through whole string to find "*".
+      wholeReview: for(int i = 0; i < review.length(); i++)
+      {
+         String str = review.substring(i, i+1);
+         
+         if(str.equals("*"))
+         {
+            //First index that will find substring.
+            replaceWordStart = review.indexOf("*");
+            
+            //Iterates though rest of string until it finds the end of the word.
+            starredAdj: for(int j = replaceWordStart; j < review.length(); j++)
+            {
+                  String strAdj = review.substring(j, j+1);
+                  
+                  //looks for space to signify end of word, or if it can't find a space, the end of the string. 
+                  if(strAdj.equals(" "))
+                  {
+                     replaceWordEnd = j;
+                     break;
+                  }
+                  else
+                  {
+                     replaceWordEnd = review.length();
+                  }
+            }
+            //Takes splits string into part before word and after, and add random adjective between.
+            review = review.substring(0, replaceWordStart) + randomAdjective() + review.substring(replaceWordEnd);
+          }
+      }
+      return review;  
+  }
+  
+  public static String fakeReviewStronger(String fileName)
+  {
+   String reveiw = textToString(fileName);
+   String word = "";
+   String newAdjective = "";
+   String fakeReview = "";
+   boolean asteriskDetected = false;
+   
+   for (int i = 0; i < reveiw.length(); i++)
+   {
+      String str = reveiw.substring(i, i+1);
+      if (str.equals("*"))
+      {
+         asteriskDetected = true;
+      }
+      
+      else if (str.equals(" ") && asteriskDetected)
+      {
+         while (true)
+         {
+            newAdjective = randomAdjective();
+            if ((sentimentVal(word) > 0) && (sentimentVal(newAdjective) > sentimentVal(word)) )
+            {
+               break;
+            }
+            else if ((sentimentVal(word) < 0) && (sentimentVal(newAdjective) < sentimentVal(word)) )
+            {
+               break;
+            }
+            else if (sentimentVal(word) == 0)
+            {
+               break;
+            }
+         }
+         
+         fakeReview += newAdjective + " ";
+         asteriskDetected = false;
+         word = "";
+      }
+      //else if (asteriskDetected == true)
+      //{
+        // word += str;
+      //}
+      
+      else if (asteriskDetected == false)
+      {
+         fakeReview += str;
+      }
+   }
+   return fakeReview;
   }
 }
